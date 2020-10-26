@@ -1,5 +1,7 @@
 # Chain Reaction Framework
 
+Readme url: [Readme](https://github.com/Hhhho/Chain-Reaction)
+The spec document: [Demand](https://github.com/Hhhho/Chain-Reaction/blob/main/Project3.docx)
 
 # A very simple framework of chain reaction using C++ language. 
 

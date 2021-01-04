@@ -43,3 +43,111 @@ void algorithm_A(Board board, Player player, int index[]){
     index[1] = col;
     
 }
+
+
+int score (Board board, Player player) {
+    int color = player.get_color();
+    int sc = 0;
+    int my_orbs =0 , enemy_orbs = 0;
+    for (int row = 0; row < 5; row ++){
+        for (int col = 0; col <6;col++){
+            if (board.get_cell_color(row, col) == color){
+                my_orbs +=  board.get_orbs_num(row,col);
+                int flag_not_vun = 1;
+                //negibors
+                if (row!=0 && col!=0){
+                    if (board.get_cell_color(row-1,col-1) != color){
+                        if (board.get_orbs_num(row-1,col-1)==board.get_capacity(row-1,col-1)-1){
+                            sc -= 5-board.get_capacity(row,col);
+                            flag_not_vun = 0;
+                        }
+                    }
+                }
+                if (row!=0){
+                    if (board.get_cell_color(row-1,col) != color){
+                        if (board.get_orbs_num(row-1,col)==board.get_capacity(row-1,col)-1){
+                            sc -= 5-board.get_capacity(row,col);
+                            flag_not_vun = 0;
+                        }
+                    }
+                }
+                if (row!=0 && col!=5){
+                    if (board.get_cell_color(row-1,col+1) != color){
+                        if (board.get_orbs_num(row-1,col+1)==board.get_capacity(row-1,col+1)-1){
+                            sc -= 5-board.get_capacity(row,col);
+                            flag_not_vun = 0;
+                        }
+                    }
+                }
+                if (col!=0){
+                    if (board.get_cell_color(row,col-1) != color){
+                        if (board.get_orbs_num(row,col-1)==board.get_capacity(row,col-1)-1){
+                            sc -= 5-board.get_capacity(row,col);
+                            flag_not_vun = 0;
+                        }
+                    }
+                }
+                if (col!=5){
+                    if (board.get_cell_color(row,col+1) != color){
+                        if (board.get_orbs_num(row,col+1)==board.get_capacity(row,col+1)-1){
+                            sc -= 5-board.get_capacity(row,col);
+                            flag_not_vun = 0;
+                        }
+                    }
+                }
+                if (row!=4 && col!=0){
+                    if (board.get_cell_color(row+1,col-1) != color){
+                        if (board.get_orbs_num(row+1,col-1)==board.get_capacity(row+1,col-1)-1){
+                            sc -= 5-board.get_capacity(row,col);
+                            flag_not_vun = 0;
+                        }
+                    }
+                }
+                if (row!=4){
+                    if (board.get_cell_color(row+1,col) != color){
+                        if (board.get_orbs_num(row+1,col)==board.get_capacity(row+1,col)-1){
+                            sc -= 5-board.get_capacity(row,col);
+                            flag_not_vun = 0;
+                        }
+                    }
+                }
+                if (row!=4 && col!=5){
+                    if (board.get_cell_color(row+1,col+1) != color){
+                        if (board.get_orbs_num(row+1,col+1)==board.get_capacity(row+1,col+1)-1){
+                            sc -= 5-board.get_capacity(row,col);
+                            flag_not_vun = 0;
+                        }
+                    }
+                }
+                /*neigbor end*/
+                if (flag_not_vun==1){
+                    //corner
+                    if (board.get_capacity(row,col)==3){
+                        sc+=3;
+                    }
+                    //edge
+                    else if (board.get_capacity(row,col)==5){
+                        sc+=2;
+                    }
+                    //unstable
+                    if (board.get_orbs_num(row,col)==board.get_capacity(row,col)-1){
+                        sc +=2;
+                    }
+                }
+            }
+            else {
+                enemy_orbs += board.get_orbs_num(row,col);
+            }
+        }
+    }
+    sc += my_orbs;
+    if (enemy_orbs == 0 && my_orbs > 1) {
+        return 10000;
+    }
+    else if (my_orbs ==0 && enemy_orbs >1) {
+        return -10000;
+    }
+    //chain
+
+    return sc;
+}

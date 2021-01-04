@@ -29,18 +29,32 @@ using namespace std;
 void algorithm_A(Board board, Player player, int index[]){
 
     //////your algorithm design///////////
-    srand(time(NULL)*time(NULL));
-    int row, col;
-    int color = player.get_color();
-    
-    while(1){
-        row = rand() % 5;
-        col = rand() % 6;
-        if(board.get_cell_color(row, col) == color || board.get_cell_color(row, col) == 'w') break;
-    }
-
-    index[0] = row;
-    index[1] = col;
+    //////your algorithm design///////////
+   int best_sc=-2147483647, best_i ,best_j;
+   for (int i=0;i<5;i++){
+        for (int j=0;j<6;j++){
+            Board simboard;
+            Player simplayer(player.get_color());
+            simplayer = player;
+            simboard = board;
+            simboard.place_orb(i,j,&simplayer);
+            int temp_sc = score(simboard,simplayer);
+            if (temp_sc == 10000) {
+                index[0] = i;
+                index[1] = j;
+                return;
+            }
+            else {
+                if (temp_sc > best_sc){
+                    best_sc = temp_sc;
+                    best_i = i;
+                    best_j = j;
+                }
+            }
+        }
+   }
+    index[0] = best_i;
+    index[1] = best_j;
     
 }
 
